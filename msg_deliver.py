@@ -9,6 +9,8 @@ Api = object
 last_message_id = 0
 
 
+# 本文件负责消息分发
+
 def mainloop(qqbot, ui):
     # print(1)
     while True:
