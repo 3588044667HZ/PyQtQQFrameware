@@ -1,0 +1,4 @@
+requests~=2.31.0
+websocket~=0.2.1
+websocket-client~=1.6.1
+PyQt5~=5.15.9
