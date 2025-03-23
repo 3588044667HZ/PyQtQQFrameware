@@ -11,11 +11,10 @@ last_message_id = 0
 
 # 本文件负责消息分发
 
-def mainloop(qqbot, ui):
+def mainloop(qqbot, ui):  # 接收消息调用插件的消息循环
     # print(1)
     while True:
         rev = qqbot.rev_msg()
-        # print(rev)
         if not rev:
             break
         if rev.get('message_type') == 'group':
@@ -53,21 +52,20 @@ def mainloop(qqbot, ui):
 
         else:
             ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': str(rev)})
-    # print(1)
 
 
-def loop_recv(qqbot):
-    # print(2)
-    while True:
-        rev = qqbot.rev_msg()
-        if rev is None:
-            continue
-        elif "message_type" not in rev:
-            print("looprecv", rev)
-
-        else:
-            print('rev', rev)
-            qqbot.recv_queue.put(rev)
+# def loop_recv(qqbot):
+#     # print(2)
+#     while True:
+#         rev = qqbot.rev_msg()
+#         if rev is None:
+#             continue
+#         elif "message_type" not in rev:
+#             print("looprecv", rev)
+#
+#         else:
+#             # print('rev', rev)
+#             qqbot.recv_queue.put(rev)
 
 
 def send_msg_thread(qqbot):

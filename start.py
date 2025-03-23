@@ -23,7 +23,7 @@ parser.add_argument('If_window', metavar='If_window', type=bool, nargs='?',
 opt = parser.parse_args()
 if not opt.If_window:
     pass
-else:
+else:  # UI初始化
     from PyQt5 import QtWidgets
     from PyQt5.QtCore import Qt
     from pybot import qqbot
@@ -60,8 +60,6 @@ else:
 
 if pybot.USE_WEBSOCKET:
     cli = qqbot()
-
-
     def connect_():
         try:
             cli.connect(config.get('main', 'ws_addr'))
