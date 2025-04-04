@@ -3,7 +3,7 @@ qqbot = 0
 gp_id = 0
 import tkinter
 
-
+import time
 def init(p_id: int, Api: object, ):  # 框架启动调用
     global gp_id
     global qqbot
@@ -30,6 +30,7 @@ def on_group_msg(dic: dict):
     msg = dic['message']
     qq = dic['user_id']
     if msg == '打卡' and qq == 3588044667:
+        time.sleep(3)
         qqbot.send_group_sign(dic['group_id'])
         qqbot.send_group_msg(dic['group_id'], '活着', delay=3)
     else:

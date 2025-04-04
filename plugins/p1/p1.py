@@ -109,7 +109,7 @@ def on_private_msg(dic: dict):
 # {'msg_type': 'private', 'number': dic['user_id'], 'msg': res['data'][0]['content']},
 # delay=len(res['data'][0]['content']) * 0.9)
 def on_notice(dic):
-    print(dic)
+    # print(dic)
     subtype: str = dic['sub_type']
     qq = dic['user_id']
     if dic['post_type'] == 'notice':
