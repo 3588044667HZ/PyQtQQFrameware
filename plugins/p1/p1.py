@@ -109,13 +109,22 @@ def on_private_msg(dic: dict):
 # {'msg_type': 'private', 'number': dic['user_id'], 'msg': res['data'][0]['content']},
 # delay=len(res['data'][0]['content']) * 0.9)
 def on_notice(dic):
-    msg: str = dic['sub_type']
+    subtype: str = dic['sub_type']
     qq = dic['sender_id']
     if dic['post_type'] == 'notice':
-        data = {'content': msg, 'type': '2', 'from': qq,
-                'fromName': dic['sender']['nickname'], 'to': dic['group_id']}
-        res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
-        qqbot.send_group_msg(dic['group_id'], res['data'][0]['content'], delay=len(res['data'][0]['content']) * 0.05)
+        if 'group_id' in dic:  # 群聊戳
+            data = {'content': subtype, 'type': '2', 'from': qq,
+                    'fromName': dic['sender']['nickname'], 'to': dic['group_id']}
+            res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
+            qqbot.send_group_msg(dic['group_id'], res['data'][0]['content'],
+                                 delay=len(res['data'][0]['content']) * 0.4)
+        else:
+            data = {'content': subtype, 'type': '1', 'from': qq,
+                    'fromName': dic['sender']['nickname'], 'to': dic['user_id']}
+            res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
+            qqbot.send_private_msg(user_id=dic['user_id'], msg=res['data'][0]['content'],
+                                   delay=len(res['data'][0]['content']) * 0.4)
+
 
 
 def setting():
