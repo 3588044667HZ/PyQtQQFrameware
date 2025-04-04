@@ -39,7 +39,7 @@ def on_group_msg(dic: dict):
         r1 = response['content'] + '\n' + '出处：' + response['origin'] + '\n' + '作者：' + response[
             'author'] + '\n' + '标签:' + response['category']
         qqbot.send_msg({'msg_type': 'group', 'number': dic['group_id'],
-                        'msg': '[CQ:at,qq={}]'.format(str(dic['user_id'])) + r1}, delay=len(r1) ** 0.07)
+                        'msg': '[CQ:at,qq={}]'.format(str(dic['user_id'])) + r1}, delay=len(r1) ** 0.2)
 
 
 def on_private_msg(dic: dict):
@@ -48,7 +48,7 @@ def on_private_msg(dic: dict):
         r1 = response['content'] + '\n' + '出处：' + response['origin'] + '\n' + '作者：' + response[
             'author'] + '\n' + '标签:' + response['category']
         # print(r1)
-        qqbot.send_msg({'msg_type': 'private', 'number': dic['user_id'], 'msg': r1}, delay=len(r1) ** 0.07)
+        qqbot.send_msg({'msg_type': 'private', 'number': dic['user_id'], 'msg': r1}, delay=len(r1) ** 0.2)
 
 
 # def on_notice(dic):

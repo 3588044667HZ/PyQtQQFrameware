@@ -3,14 +3,17 @@ import os
 # import tkinter.filedialog as di
 import shutil
 import zipfile
-from tkinter import messagebox, filedialog
+
+import PyQt5
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
+
 import sqlite
 from Plugin import Plugin, Bot
 
 Api = object
 p_list = list()
-ui = None
+
+ui: PyQt5.QtWidgets.QWidget
 # respond_group_plugin = list()
 # respond_private_plugin = list()
 # respond_notice = list()
@@ -37,6 +40,7 @@ def loadplugin(_ui: object, BotApi):
                              author=res.get('author'), setting=p.setting, pid=res['p_id'],
                              enable_func=p.enable, disable_func=p.disable, complain=res.get('complain'),
                              if_groupMsg=True,
+                             if_notice=True,
                              if_privateMsg=True, respond_group_msg=res.get('respond_group_msg', False),
                              respond_private_msg=res.get('respond_private_msg', False),
                              respond_notice=res.get('respond_notice', False),
@@ -103,6 +107,7 @@ def add_plugin_with_win():  # 添加插件
                                 author=res.get('author', 'NNN'), setting=module.setting, pid=res['p_id'],
                                 enable_func=module.enable, disable_func=module.disable, complain=res.get('complain'),
                                 if_groupMsg=True,
+                                if_notice=True,
                                 if_privateMsg=True, respond_group_msg=res.get('respond_group_msg', False),
                                 respond_private_msg=res.get('respond_private_msg', False),
                                 respond_notice=res.get('respond_notice', False),

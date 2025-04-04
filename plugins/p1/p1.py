@@ -50,7 +50,7 @@ def on_group_msg(dic: dict):
             qqbot.send_group_msg(dic['group_id'],
                                  "[CQ:reply,id={0}] [CQ:at,qq={1}]".format(str(dic['message_id']), dic['user_id']) +
                                  res['data'][0]['content'],
-                                 delay=len(res['data'][0]['content']) * 0.1)
+                                 delay=len(res['data'][0]['content']) * 0.5)
         if re.match('^/echo.(.*?)', msg):
             qqbot.send_group_msg(dic['group_id'], str(re.findall(r'^/echo.(.*?)$', msg)[0]), delay=0.7)
 
@@ -100,7 +100,7 @@ def on_private_msg(dic: dict):
             data = {'content': msg, 'type': '1', 'from': qq}
             res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
             qqbot.send_private_msg(user_id=dic['user_id'], msg=res['data'][0]['content'],
-                                   delay=len(res['data'][0]['content']) * 0.1)
+                                   delay=len(res['data'][0]['content']) * 0.4)
     except ZeroDivisionError:
 
         pass
@@ -109,22 +109,22 @@ def on_private_msg(dic: dict):
 # {'msg_type': 'private', 'number': dic['user_id'], 'msg': res['data'][0]['content']},
 # delay=len(res['data'][0]['content']) * 0.9)
 def on_notice(dic):
+    print(dic)
     subtype: str = dic['sub_type']
-    qq = dic['sender_id']
+    qq = dic['user_id']
     if dic['post_type'] == 'notice':
         if 'group_id' in dic:  # 群聊戳
             data = {'content': subtype, 'type': '2', 'from': qq,
-                    'fromName': dic['sender']['nickname'], 'to': dic['group_id']}
+                    'to': dic['group_id']}
             res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
             qqbot.send_group_msg(dic['group_id'], res['data'][0]['content'],
                                  delay=len(res['data'][0]['content']) * 0.4)
         else:
             data = {'content': subtype, 'type': '1', 'from': qq,
-                    'fromName': dic['sender']['nickname'], 'to': dic['user_id']}
+                    'to': dic['user_id']}
             res = requests.post(url, data=json.dumps(data), headers=mly_head).json()
             qqbot.send_private_msg(user_id=dic['user_id'], msg=res['data'][0]['content'],
                                    delay=len(res['data'][0]['content']) * 0.4)
-
 
 
 def setting():

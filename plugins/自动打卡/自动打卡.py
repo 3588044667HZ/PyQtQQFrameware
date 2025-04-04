@@ -29,9 +29,9 @@ def disable():
 def on_group_msg(dic: dict):
     msg = dic['message']
     qq = dic['user_id']
-    if msg == '测试' and qq == 3588044667:
+    if msg == '打卡' and qq == 3588044667:
         qqbot.send_group_sign(dic['group_id'])
-        qqbot.send_group_msg(dic['group_id'], '活着', delay=0.1)
+        qqbot.send_group_msg(dic['group_id'], '活着', delay=3)
     else:
         pass
 

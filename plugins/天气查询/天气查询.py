@@ -45,14 +45,14 @@ def on_private_msg(dic):
         res = requests.get(url).json()
         fin = res['results'][0]['location']["path"] + '\n' + res['results'][0]['now']['text'] + '\n' + \
               res['results'][0]['now']['temperature'] + '摄氏度'
-        qqbot.send_msg({'msg_type': 'private', 'number': dic['user_id'], 'msg': fin}, delay=1)
+        qqbot.send_msg({'msg_type': 'private', 'number': dic['user_id'], 'msg': fin}, delay=10)
 
 
 def on_group_msg(dic):
     if dic['raw_message'] == '天气查询':
         global rev
         rev = dic
-        qqbot.send_group_msg(dic['group_id'], '请发送城市', delay=0.9)
+        qqbot.send_group_msg(dic['group_id'], '请发送城市', delay=1)
         global qq
         qq.append(dic['user_id'])
     elif dic['user_id'] in qq:
@@ -64,7 +64,7 @@ def on_group_msg(dic):
         # print(res)
         fin = res['results'][0]['location']["path"] + '\n' + res['results'][0]['now']['text'] + '\n' + \
               res['results'][0]['now']['temperature'] + '摄氏度'
-        qqbot.send_group_msg(dic['group_id'], fin, delay=2)
+        qqbot.send_group_msg(dic['group_id'], fin, delay=5)
 
 
 def on_notice(dic):
