@@ -1,11 +1,12 @@
 import tkinter
 
-name = '群管'
 import configparser
 import os
 from threading import Thread
 import msg_deliver
+from Plugin import Bot
 
+name = '群管'
 # import re
 
 # from sdk import Bot
@@ -17,12 +18,12 @@ try:
     guding = conf.get('data', '固定头衔').split(r',')
 except:
     print('群管数据不存在')
-qqbot = None
+qqbot: Bot
 gp_id = 0
 complain = '群管'
 
 
-def init(p_id: int, Api: object):
+def init(p_id: int, Api: Bot):
     global gp_id
     global qqbot
     gp_id = p_id

@@ -1,12 +1,14 @@
 import tkinter
+import requests
 
 name = 'p3'
-import requests
+
+from Plugin import Bot
 
 # from sdk import Bot
 
 complain = '搜图'
-qqbot = None
+qqbot: Bot
 gp_id = 0
 
 

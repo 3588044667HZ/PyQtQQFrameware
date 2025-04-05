@@ -1,12 +1,12 @@
-name = '随机诗句'
-
 import requests
 
-# from sdk import Bot
 
-qqbot = None
+# from sdk import Bot
+from Plugin import Bot
+name = '随机诗句'
+qqbot: Bot
 api = 'https://v1.jinrishici.com/all.json'
-g_pid = 0
+gp_id = 0
 
 
 def enable():  # 插件被启用时被调用
@@ -17,7 +17,7 @@ def enable():  # 插件被启用时被调用
     # return {'name': name, 'complain': '关键词：一言', 'author': 'None', 'ver': '0.1', 'p_id': p_id}
 
 
-def init(p_id: int, Api: object):  # 插件第一次安装时调用
+def init(p_id: int, Api: Bot):  # 插件第一次安装时调用
     global gp_id
     global qqbot
     gp_id = p_id

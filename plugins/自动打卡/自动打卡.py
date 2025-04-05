@@ -1,13 +1,15 @@
 import tkinter
 
 import time
+from Plugin import Bot
 
 name = '自动打卡'
-qqbot = 0
+qqbot: Bot
 gp_id = 0
 
 
-def init(p_id: int, Api: object, ):  # 框架启动调用
+def init(p_id: int, Api: Bot, ):  # 框架启动调用
+    # print('init')
     global gp_id
     global qqbot
     gp_id = p_id
@@ -30,9 +32,11 @@ def disable():
 
 
 def on_group_msg(dic: dict):
+    # print(dic)
     msg = dic['message']
     qq = dic['user_id']
     if msg == '打卡' and qq == 3588044667:
+        # print(1)
         time.sleep(3)
         qqbot.send_group_sign(dic['group_id'])
         qqbot.send_group_msg(dic['group_id'], '活着', delay=3)

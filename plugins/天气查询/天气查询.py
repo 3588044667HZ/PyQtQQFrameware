@@ -1,8 +1,8 @@
 import configparser
 import tkinter
-
-name = '天气查询'
 import requests
+name = '天气查询'
+
 
 # from sdk import Bot
 conf = configparser.ConfigParser()

@@ -18,6 +18,7 @@ def mainloop(qqbot, ui):  # 接收消息调用插件的消息循环
         if not rev:
             break
         if rev.get('message_type') == 'group':
+            # print('msgdeliver', rev)
             ui.s.sendmsg.emit({'type': 'recv_group_message', 'sender': '框架', 'text': str(rev)})
             for i in plu_dic:
                 if i.respond_group_msg and i.enable and i.if_groupMsg:

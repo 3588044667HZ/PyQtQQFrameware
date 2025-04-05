@@ -4,6 +4,7 @@ import json
 import re
 import requests
 import configparser
+from Plugin import Bot
 
 name = 'p1'
 # from sdk import Bot
@@ -13,11 +14,11 @@ conf.read('./plugins/p1/conf.ini')
 url = 'https://api.mlyai.com/reply'
 mly_head = {'Api-Key': conf.get('main', 'Api-Key'), 'Api-Secret': conf.get('main', 'Api-Secret'),
             'Content-Type': 'application/json;charset=UTF-8'}
-qqbot = None
+qqbot: Bot
 gp_id = 0
 
 
-def init(p_id: int, Api: object, ):  # 框架启动调用
+def init(p_id: int, Api: Bot, ):  # 框架启动调用
     global gp_id
     global qqbot
     gp_id = p_id

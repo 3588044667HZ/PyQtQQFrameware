@@ -96,38 +96,45 @@ def delay_deco(func):  # 延时装饰器
 
 
 class BotApi:
+    @staticmethod
     @delay_deco
     def send_msg(dic: dict, plugin_name: str):
         cli.send_msg(dic)
         ui.s.sendmsg.emit({'type': 'send_message', 'sender': '插件' + plugin_name, 'text': str(dic)})
 
+    @staticmethod
     @delay_deco
     def send_group_msg(group: int, msg: str, plugin_name: str):
         cli.send_group_msg(group=group, msg=msg)
         ui.s.sendmsg.emit(
             {'type': 'send_group_message', 'sender': '插件' + plugin_name, 'text': '发送群' + str(group) + msg})
 
+    @staticmethod
     @delay_deco
     def info(s: dict):
         ui.s.sendmsg.emit(s)
 
+    @staticmethod
     @delay_deco
-    def delete_friend(id: int, plugin_name: str):
+    def delete_friend(friend_id: int, plugin_name: str):
         # sleep(delay)
-        cli.delete_friend(id=id)
-        ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name, 'text': '删除好友' + str(id)})
+        cli.delete_friend(id=friend_id)
+        ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name, 'text': '删除好友' + str(friend_id)})
 
+    @staticmethod
     @delay_deco
-    def group_request(flag, type, approve, reason, plugin_name: str):
+    def group_request(flag, type_, approve, reason, plugin_name: str):
         # sleep(delay)
-        cli.group_request(flag=flag, type=type, approve=approve, reason=reason, )
+        cli.group_request(flag=flag, type=type_, approve=approve, reason=reason, )
         ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name, 'text': '回应群邀请' + str(flag)})
 
+    @staticmethod
     @delay_deco
     def friend_request(flag, approve, remark):  # 加好友请求的 flag（需从上报的数据中获得）|是否同意请求|添加后的好友备注（仅在同意时有效）
         # sleep(delay)
         cli.friend_request(flag=flag, approve=approve, remark=remark)
 
+    @staticmethod
     @delay_deco
     def kick(group_id: int, user_id, reject_add_request, plugin_name: str):
         # sleep(delay)
@@ -136,6 +143,7 @@ class BotApi:
             {'type': 'action', 'sender': '插件' + plugin_name, 'text': str(group_id) + '踢' + str(user_id)})
         return 0
 
+    @staticmethod
     @delay_deco
     def ban(group_id, user_id, time, plugin_name: str):  # 群中单人禁言
         # sleep(delay)
@@ -144,14 +152,16 @@ class BotApi:
                            'text': '群' + str(group_id) + '禁言' + str(user_id) + ' ' + str(time) + '秒'})
         return 0
 
+    @staticmethod
     @delay_deco
     def set_title(group_id, user_id, special_title, plugin_name: str):
         # sleep(delay)
         cli.set_title(group_id=group_id, user_id=user_id, special_title=special_title)
         ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name,
                            'text': '群%i 改昵称%s %s' % (group_id, user_id, special_title)})
-        return 0
+        return
 
+    @staticmethod
     @delay_deco
     def group_ban(group_id, enable, plugin_name: str):
         # sleep(delay)
@@ -159,6 +169,7 @@ class BotApi:
         ui.s.sendmsg.emit(
             {'type': 'action', 'sender': '插件' + plugin_name, 'text': '%i全体群禁%s' % (group_id, enable)})
 
+    @staticmethod
     @delay_deco
     def set_group_special_title(gid: int, uid: int, title: str, plugin_name: str):
         # sleep(delay)
@@ -166,6 +177,7 @@ class BotApi:
         ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name,
                            'text': '群%i 改头衔%s %s' % (gid, uid, title)})
 
+    @staticmethod
     @delay_deco
     def send_group_sign(group_id: int, plugin_name: str):
         # sleep(delay)
@@ -173,12 +185,14 @@ class BotApi:
         ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name,
                            'text': '群%d打卡' % group_id})
 
+    @staticmethod
     @delay_deco
     def send_private_msg(user_id, msg: str, plugin_name: str):
         cli.send_private_msg(user_id, msg)
         ui.s.sendmsg.emit({'type': 'action', 'sender': '插件' + plugin_name,
                            'text': '向%d发送私聊消息%s' % (user_id, msg)})
 
+    @staticmethod
     def delete_msg(msg_id):
         cli.del_msg(msg_id)
 
