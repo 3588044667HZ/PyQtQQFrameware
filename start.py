@@ -60,6 +60,8 @@ else:  # UI初始化
 
 if pybot.USE_WEBSOCKET:
     cli = qqbot()
+
+
     def connect_():
         try:
             cli.connect(config.get('main', 'ws_addr'))
