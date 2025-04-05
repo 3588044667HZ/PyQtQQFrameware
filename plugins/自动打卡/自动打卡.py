@@ -1,9 +1,12 @@
-name = '自动打卡'
-qqbot = 0
-gp_id = 0
 import tkinter
 
 import time
+
+name = '自动打卡'
+qqbot = 0
+gp_id = 0
+
+
 def init(p_id: int, Api: object, ):  # 框架启动调用
     global gp_id
     global qqbot
