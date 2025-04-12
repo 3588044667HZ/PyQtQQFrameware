@@ -113,7 +113,7 @@ def on_notice(dic):
     # print(dic)
     subtype: str = dic['sub_type']
     qq = dic['user_id']
-    if dic['post_type'] == 'notice':
+    if dic['target_id'] == 3155789073:
         if 'group_id' in dic:  # 群聊戳
             data = {'content': subtype, 'type': '2', 'from': qq,
                     'to': dic['group_id']}
