@@ -143,13 +143,13 @@ def setting():
     Api_Secret.pack(fill=tkinter.X)
     Api_Secret.insert(0, conf['main']['Api-Secret'])
 
-    def writting_config():
+    def writing_config():
         conf['main']['Api-Key'] = api_key.get()
         conf['main']['Api-Secret'] = Api_Secret.get()
         with open('conf.ini', 'w') as f:
             conf.write(f)
 
-    b = tkinter.Button(text='保存', command=writting_config)
+    b = tkinter.Button(text='保存', command=writing_config)
     b.pack()
     # b.
     tk.mainloop()
