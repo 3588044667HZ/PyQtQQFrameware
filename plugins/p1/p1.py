@@ -7,7 +7,6 @@ import configparser
 from Plugin import Bot
 
 name = 'p1'
-# from sdk import Bot
 conf = configparser.ConfigParser()
 conf.read('./plugins/p1/conf.ini')
 
