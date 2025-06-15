@@ -69,6 +69,7 @@ def loadplugin(_ui: object, BotApi):
             continue
     return
 
+
 def add_plugins_to_ui() -> None:
     if p_list == 0:
         return
@@ -86,6 +87,14 @@ def add_plugin_with_win():  # 添加插件
     print(path)
     # path = filedialog.askopenfilename()  # todo
     if path:
+        if not zipfile.is_zipfile(path):
+            QMessageBox.warning(
+                ui,
+                '文件错误',
+                '选择的文件不是有效的ZIP文件',
+                QMessageBox.Yes
+            )
+            return False
         with zipfile.ZipFile(path, 'r') as f:
             info = json.loads(f.read('info.json'))
             print(info)
