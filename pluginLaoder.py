@@ -70,7 +70,7 @@ def loadplugin(_ui: object, BotApi):
 
 def add_plugins_to_ui() -> None:
     if p_list == 0:
-        return 0
+        return
     else:
         for i in p_list:
             if i.enable:
