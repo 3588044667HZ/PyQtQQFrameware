@@ -88,6 +88,7 @@ class Ui_MainWindow(object):
         self.config = config
 
     def setupUi(self, MainWindow):
+        self.mainwindow = MainWindow
         MainWindow.setWindowTitle(u"QC框架")
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")

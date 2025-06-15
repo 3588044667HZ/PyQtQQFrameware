@@ -18,6 +18,7 @@ class Plugin:
         self.respond_notice = kwargs.get('respond_notice')
         self.respond_request = kwargs.get('respond_request')
         self.enable_func = kwargs.get('enable_func')
+        self.disable_func = kwargs.get('disable_func')
         self.on_request = None
 
 

@@ -84,34 +84,75 @@ def add_plugins_to_ui() -> None:
 
 def add_plugin_with_win():  # 添加插件
     path, _ = QFileDialog.getOpenFileName()
-    print(path)
+    # print(path)
     # path = filedialog.askopenfilename()  # todo
     if path:
-        if not zipfile.is_zipfile(path):
+        if not zipfile.is_zipfile(path):  # 验证zip文件
             QMessageBox.warning(
-                ui,
+                ui.mainwindow,
                 '文件错误',
                 '选择的文件不是有效的ZIP文件',
                 QMessageBox.Yes
             )
             return False
-        with zipfile.ZipFile(path, 'r') as f:
-            info = json.loads(f.read('info.json'))
-            print(info)
+        with zipfile.ZipFile(path, 'r') as f:  # 检查info.json是否存在
+            if 'info.json' not in f.namelist():
+                QMessageBox.warning(
+                    ui.mainwindow,
+                    '插件包错误',
+                    '插件包缺少info.json文件',
+                    QMessageBox.Yes
+                )
+                return False
+            try:
+                info = json.loads(f.read('info.json'))
+            except json.JSONDecodeError:
+                QMessageBox.warning(
+                    ui.mainwindow,
+                    '插件包错误',
+                    'info.json文件格式错误',
+                    QMessageBox.Yes
+                )
+                return False
+            # 验证必要字段
+            required_fields = ['name', 'dist']
+            for field in required_fields:
+                if field not in info:
+                    QMessageBox.warning(
+                        ui.mainwindow,
+                        '插件包错误',
+                        f'info.json缺少必要字段: {field}',
+                        QMessageBox.Yes
+                    )
+                    return False
+            plugin_name = info['name']
+            plugin_dir = f'./plugins/{plugin_name}'
+            # print(info)
             ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': '添加插件' + info['name']})
-            print(1)
-            if os.path.exists('./plugins/' + info['name']):
-                QMessageBox.information(ui, '插件重名', info['name'] + '插件已存在或插件名冲突', QMessageBox.Yes)
-                # messagebox.showinfo('插件重名', info['name'] + '插件已存在或插件名冲突')
+            # print(1)
+            if os.path.exists(plugin_dir):
+                reply = QMessageBox.question(
+                    ui.mainwindow,
+                    '插件已存在',
+                    f'插件 {plugin_name} 已存在，是否覆盖?',
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No
+                )
+                if reply == QMessageBox.No:
+                    return False
+                shutil.rmtree(plugin_dir)
+
+                # 5. 创建插件目录
+                os.makedirs(plugin_dir, exist_ok=True)
             else:
                 os.mkdir('./plugins/' + info['name'])
                 f.extractall(path='./plugins/' + info['name'])
                 if set(os.listdir('./plugins/' + info['name'])) == set(info['dist']):
                     module = __import__('plugins' + '.' + info['name'] + '.' + info['name'],
                                         fromlist=info['name'])  # todo
-                    print(module)
+                    # print(module)
                     res: dict = module.init(p_id=hash(module), Api=Api)
-                    print('res', res)
+                    # print('res', res)
                     pg = Plugin(name=res['name'],
                                 version=res.get('ver', 0.0),
                                 author=res.get('author', 'NNN'), setting=module.setting, pid=res['p_id'],
@@ -122,7 +163,7 @@ def add_plugin_with_win():  # 添加插件
                                 respond_private_msg=res.get('respond_private_msg', False),
                                 respond_notice=res.get('respond_notice', False),
                                 respond_request=res.get('respond_request', False))
-                    print('pg', pg)
+                    # print('pg', pg)
                     if pg.respond_group_msg:
                         pg.on_group_msg = module.on_group_msg
                     if pg.respond_private_msg:
@@ -132,13 +173,16 @@ def add_plugin_with_win():  # 添加插件
                     if pg.respond_request:
                         pg.on_request = module.on_request
                     p_list.append(pg)
-                    print(p_list)
+                    # print(p_list)
                     ui.s.add_plugin.emit(pg)
                     sql.insert('plugin_setting', hash(module), res['name'], res['author'], res['ver'], False,
                                res['complain'])
+                    return True
                 else:
-                    QMessageBox.warning(ui, '安装错误', info['name'] + '安装包不完整', QMessageBox.Yes)
+                    QMessageBox.warning(ui.mainwindow, '安装错误', info['name'] + '安装包不完整', QMessageBox.Yes)
                     # messagebox.showwarning('安装错误', info['name'] + '安装包不完整')  # todo
                     shutil.rmtree('./plugins/' + info['name'])
+                    return False
     else:
         ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': '用户取消添加插件'})
+        return False
