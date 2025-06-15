@@ -28,45 +28,46 @@ def loadplugin(_ui: object, BotApi):
     Api = BotApi
     global ui
     ui = _ui
-    name = sql.selectAll('plugin_setting')
-    if name:  # 有插件
-        for i in name:
-            try:
-                p = __import__('plugins' + '.' + i[1] + '.' + i[1],
-                               fromlist=i[1])  # todo
-                res = p.init(hash(p), Bot(Api, hash(p), can_group=True, name=p.name))
-                tmp = Plugin(name=res['name'],
-                             version=res.get('ver'),
-                             author=res.get('author'), setting=p.setting, pid=res['p_id'],
-                             enable_func=p.enable, disable_func=p.disable, complain=res.get('complain'),
-                             if_groupMsg=True,
-                             if_notice=True,
-                             if_privateMsg=True, respond_group_msg=res.get('respond_group_msg', False),
-                             respond_private_msg=res.get('respond_private_msg', False),
-                             respond_notice=res.get('respond_notice', False),
-                             respond_request=res.get('respond_request'))
-                if tmp.respond_group_msg:
-                    tmp.on_group_msg = p.on_group_msg
-                if tmp.respond_private_msg:
-                    tmp.on_private_msg = p.on_private_msg
-                if tmp.respond_notice:
-                    tmp.on_notice = p.on_notice
-                if tmp.respond_request:
-                    tmp.on_request = p.on_request
-                if i[4] == 1:
-                    tmp.enable = True
-                else:
-                    tmp.enable = False
-                p_list.append(tmp)
-                ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': '加载插件%s' % i[1]})
-            except ModuleNotFoundError:
-                ui.s.sendmsg.emit({'type': 'error', 'sender': '框架', 'text': '加载插件%s时出错，未找到插件本体。' % i[1]})
-                sql.delete('plugin_setting', name=i[1])
-                sql.commit()
-        return
-    else:
+    name = sql.selectAll('plugin_setting')  # 获取所有插件设置
+    if not name:  # 无插件
+        ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': '未找到任何已安装插件'})
         return 0
-
+        # 有插件
+    for i in name:
+        try:
+            p = __import__('plugins' + '.' + i[1] + '.' + i[1],
+                           fromlist=i[1])  # todo
+            res = p.init(hash(p), Bot(Api, hash(p), can_group=True, name=p.name))
+            tmp = Plugin(name=res['name'],
+                         version=res.get('ver'),
+                         author=res.get('author'), setting=p.setting, pid=res['p_id'],
+                         enable_func=p.enable, disable_func=p.disable, complain=res.get('complain'),
+                         if_groupMsg=True,
+                         if_notice=True,
+                         if_privateMsg=True, respond_group_msg=res.get('respond_group_msg', False),
+                         respond_private_msg=res.get('respond_private_msg', False),
+                         respond_notice=res.get('respond_notice', False),
+                         respond_request=res.get('respond_request'))
+            if tmp.respond_group_msg:
+                tmp.on_group_msg = p.on_group_msg
+            if tmp.respond_private_msg:
+                tmp.on_private_msg = p.on_private_msg
+            if tmp.respond_notice:
+                tmp.on_notice = p.on_notice
+            if tmp.respond_request:
+                tmp.on_request = p.on_request
+            if i[4] == 1:
+                tmp.enable = True
+            else:
+                tmp.enable = False
+            p_list.append(tmp)
+            ui.s.sendmsg.emit({'type': 'info', 'sender': '框架', 'text': '加载插件%s' % i[1]})
+        except ModuleNotFoundError:
+            ui.s.sendmsg.emit({'type': 'error', 'sender': '框架', 'text': '加载插件%s时出错，未找到插件本体。' % i[1]})
+            sql.delete('plugin_setting', name=i[1])
+            sql.commit()
+            continue
+    return
 
 def add_plugins_to_ui() -> None:
     if p_list == 0:
