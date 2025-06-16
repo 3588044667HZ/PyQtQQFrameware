@@ -213,6 +213,7 @@ else:
 if opt.If_window:
     app.exec_()
     win.close()
+    cli.connection.close()
 else:
     pass
 with open('./data/config.ini', 'w+') as configfile:

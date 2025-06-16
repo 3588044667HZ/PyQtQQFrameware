@@ -7,7 +7,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRect, QCoreApplication, QSize, QMetaObject
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QThread
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QTreeWidgetItem, QHBoxLayout, QMenu, QColorDialog
+from PyQt5.QtWidgets import QTreeWidgetItem, QHBoxLayout, QMenu, QColorDialog, QFileDialog
 from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QTreeWidget, QAbstractScrollArea, QComboBox, \
     QListWidgetItem, QPushButton, QGroupBox, QCheckBox, QLabel, QListWidget, QMenuBar, QStatusBar, \
     QLineEdit
@@ -417,6 +417,17 @@ class Ui_MainWindow(object):
 
     def save_config(self):
         self.config['main']['ws_addr'](self.WebsocketAddressEdit.text())
+
+    def export_logs(self):
+        path, _ = QFileDialog.getSaveFileName(self.mainwindow, "导出日志", "", "Text Files (*.txt)")
+        if path:
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    for i in range(self.logging_treeWidget.topLevelItemCount()):
+                        item = self.logging_treeWidget.topLevelItem(i)
+                        f.write(f"{item.text(1)} [{item.text(2)}] {item.text(3)}: {item.text(4)}\n")
+            except Exception as e:
+                self.s.sendmsg.emit({'type': 'error', 'sender': '框架', 'text': f'导出日志失败: {str(e)}'})
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
