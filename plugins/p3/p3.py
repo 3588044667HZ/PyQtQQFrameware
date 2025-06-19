@@ -47,7 +47,7 @@ def on_group_msg(dic: dict):
             # print(re)
             re1 = re['data']['url']
             s = '[CQ:image,file={},cache=0]'.format(re1)
-            qqbot.send_group_msg(group_id=dic['group_id'], msg=s)
+            qqbot.send_group_msg(group=dic['group_id'], msg=s)
             # qqbot.send_msg({'msg_type': 'group', 'number': dic['group_id'], 'msg': s})
 
 
