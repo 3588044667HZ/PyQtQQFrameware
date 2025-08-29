@@ -1,5 +1,5 @@
 # 开始
-*请确保你下载了[go-cqhttp](https://docs.go-cqhttp.org/),没有建议版本*
+*请确保你下载了任何支持反向websocket通讯方式且实现了OneBot协议的后端,没有建议版本*
 *本框架的依赖项是PyQt5,websocket,websocket-client*
 # 配置
 更改./data/config.ini中的main[ws_addr]项，也可以在框架启动后在设置里更改，然后重启框架
@@ -9,7 +9,7 @@ ws_addr = ws://192.168.1.104:6700
 ```
 ## 使用
 *运行start.py即可。*
-##### 注意，必须手动打开go-cqhttp,再打开本框架.
+##### 注意，必须手动打开后端框架,再打开本框架.
 
 # 安装插件
 在插件管理tab里右键，选择添加插件，接着选中你的插件，插件就添加成功了。
